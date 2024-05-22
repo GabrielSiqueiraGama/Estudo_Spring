@@ -1,8 +1,10 @@
 package br.com.zhant.estudo_spring.controllers;
 
+
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -33,9 +35,20 @@ public class ProductController {
 		return productRepository.findAll();
 	}
 	
+	@GetMapping(path = "/page/{numberPage}")
+	public Iterable<Product> getProductByPage(@PathVariable int numberPage){
+		PageRequest page = PageRequest.of(0, 2);
+		return productRepository.findAll(page);
+	}
+	
 	@GetMapping(path = "/{id}")
 	public Optional<Product> getProductsById(@PathVariable int id) {
 		return productRepository.findById(id);
+	}
+	
+	@GetMapping(path = "/name/{partName}")
+	public Iterable<Product> getProductByName(@PathVariable String partName){
+		return productRepository.findByNameContaining(partName);
 	}
 	
 //	@PutMapping
